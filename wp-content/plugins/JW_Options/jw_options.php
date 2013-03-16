@@ -1,4 +1,4 @@
-<?php
+<?php // 为什么不行？
 /*
 Plugin Name: JW Options
 Plugin URI: net.tutplus.com
@@ -31,6 +31,7 @@ class JW_Options {
 		<div class="wrap">
 			<?php screen_icon();?>
 			<h2>我的主题选项</h2>
+			<?php print_r(get_option('jw_plugin_options')); ?>
 			<form method="post" action="options.php" enctype="multipart/form-data">
 				<?php settings_fields('jw_plugin_options');?>
 				<?php do_settings_sections(__FILE__);?>
@@ -49,6 +50,7 @@ class JW_Options {
 		add_settings_section( 'jw_main_section', 'Main Settings', array($this, 'jw_main_section_cb'), __FILE__ ); // id, title of section, cb, ...
 		add_settings_field( 'jw_banner_heading', 'Banner Heading:', array($this, 'jw_banner_heading_setting'), __FILE__, 'jw_main_section' );
 		add_settings_field( 'jw_logo', 'Your Logo:', array($this, 'jw_logo_setting'), __FILE__, 'jw_main_section' );
+		add_settings_field( 'jw_color_scheme', '最喜欢的颜色方案:', array($this, 'jw_color_scheme_setting'), __FILE__, 'jw_main_section' );
 
 	}
 
@@ -88,6 +90,17 @@ class JW_Options {
 		if (isset($this->options['jw_logo'])) {
 			echo "<img src='{$this->options['jw_logo']}' alt='' />";
 		}
+	}
+	// Color Scheme
+	public function jw_color_scheme_setting()
+	{
+		$items = array('Red', 'Green', 'Blue');
+		echo "<select name='jw_plugin_options[jw_color_scheme]'>";
+		foreach ($items as $item) {
+			$selected = ( $this->options['jw_color_scheme'] === $item ) ? 'selected="selected"':'';
+			echo "<option value='$item' $selected>$item</option>";
+		}
+		echo '</select>';
 	}
 }
 
